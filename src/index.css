@@ -1,0 +1,118 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font-family: inherit;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid black;
+}
+
+:root {
+  /* FONT WEIGHT */
+  --fw400: 400;
+  --fw500: 500;
+  --fw700: 700;
+
+  /* COLORS */
+
+  --moderateBlue: hsl(238, 40%, 52%);
+  --softRed: hsl(358, 79%, 66%);
+  --lightGrayishBlue: hsl(239, 57%, 85%);
+  --paleRed: hsl(357, 100%, 86%);
+
+  --darkBlue: hsl(212, 24%, 26%);
+  --grayishBlue: hsl(211, 10%, 45%);
+  --lightGray: hsl(223, 19%, 93%);
+  --veryLightGray: hsl(228, 33%, 97%);
+  --white: hsl(0, 0%, 100%);
+}
+
+body {
+  font-size: 1rem;
+  font-family: "Rubik", sans-serif;
+  background-color: var(--veryLightGray);
+  padding: 2rem 1rem;
+}
+
+.card {
+  background-color: var(--white);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.card header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card header img {
+  width: 40px;
+}
+
+.card header h1 {
+  font-size: 1rem;
+  font-weight: var(--fw500);
+  color: var(--darkBlue);
+}
+
+.card p {
+  color: var(--grayishBlue);
+}
+
+.card main {
+  padding: 1.5rem 0;
+}
+
+.card footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card footer .voteBtn {
+  display: flex;
+  gap: 1rem;
+  background-color: var(--lightGray);
+  padding: 0.5rem 1rem;
+  border-radius: 14px;
+}
+
+.card footer .voteBtn .plus,
+.card footer .voteBtn .minus {
+  color: var(--lightGrayishBlue);
+  font-weight: var(--fw700);
+  font-size: 1.1rem;
+}
+
+.card footer .voteBtn .number {
+  font-size: 1.2rem;
+  font-weight: var(--fw00);
+  color: var(--moderateBlue);
+}
+
+.card footer .replyBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--moderateBlue);
+  font-weight: var(--fw500);
+  font-size: 1.1rem;
+}
+
+.card footer .replyBtn:hover {
+  text-decoration: underline;
+}
