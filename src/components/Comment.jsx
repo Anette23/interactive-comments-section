@@ -1,12 +1,12 @@
 import React from "react";
-// import avatar from "../assets/images/avatars/image-amyrobson.webp";
+
 import replyIcon from "../assets/images/icon-reply.svg";
 
-const Card = ({user, content, createdAt, score}) => {
+const Comment = ({user, content, createdAt, score}) => {
   return (
     <article className="card">
       <header>
-        <img src={user.image.webp} alt={user.username} />
+        {/* <img src={user.image.webp} alt={user.username} /> */}
         <h1>{user.username}</h1>
         <p>{createdAt}</p>
       </header>
@@ -30,4 +30,4 @@ const Card = ({user, content, createdAt, score}) => {
   );
 };
 
-export default Card;
+export default Comment;
