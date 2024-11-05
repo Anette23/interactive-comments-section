@@ -2,90 +2,67 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 
-let comments = [];
-
-fs.readFile("./data.json", (err, data) => {
-  if (err) {
-    console.error("Error reading data.json:", err);
-    return;
+const readData = () => {
+  try {
+    const data = fs.readFileSync("./data.json", "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Error reading data:", error);
+    throw error;
   }
+};
 
-  const jsonData = JSON.parse(data);
-  comments = jsonData.comments;
+const writeData = (data) => {
+  try {
+    fs.writeFileSync("./data.json", JSON.stringify(data, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing data:", error);
+    throw error;
+  }
+};
+
+// GET endpoint
+router.get("/comments", (req, res) => {
+  try {
+    const data = readData();
+    res.json(data.comments);
+  } catch (error) {
+    res.status(500).json({ message: "Error reading comments", error });
+  }
 });
 
-router.get("/", (req, res) => {
-  res.json(comments);
-});
+// POST endpoint
+router.post("/comments", (req, res) => {
+  try {
+    const data = readData();
 
-router.post("/", (req, res) => {
-  const newComment = {
-    id: comments.id,
-    user: req.body.user,
-    content: req.body.content,
-    createdAt: "Just now",
-    score: 0,
-    replies: [],
-  };
-
-  comments.push(newComment);
-
-  fs.writeFile(
-    "./data.json",
-    JSON.stringify({ currentUser: {}, comments }),
-    (err) => {
-      if (err) {
-        console.error("Error writing to data.json:", err);
-      }
+    const newComment = {
+      id: Date.now(),
+      content:req.body.content,
+      createdAt: new Date().toISOString(),
+      score:0,
+      user:data.currentUser,
+      replies:[],
     }
-  );
-
-  res.status(201).json(newComment);
-});
-
-router.put("/:id", (req, res) => {
-  const { id } = req.params; // Získaj id z parametrov
-  const updatedComment = req.body; // Získaj nové údaje z tela požiadavky
-
-  // Hľadaj komentár podľa id a aktualizuj ho
-  const commentIndex = comments.findIndex(
-    (comment) => comment.id === parseInt(id)
-  );
-
-  if (commentIndex !== -1) {
-    comments[commentIndex] = { ...comments[commentIndex], ...updatedComment }; // Aktualizuj komentár
-
-    // Ulož aktualizované komentáre do data.json
-    fs.writeFile("./data.json", JSON.stringify({ comments }), (err) => {
-      if (err) {
-        console.error("Error writing to data.json:", err);
+    if (req.body.parentId) {
+      const parentComment = data.comments.find(
+        (comment) => comment.id === req.body.parentId
+      );
+      if (parentComment) {
+        parentComment.replies.push(newComment);
+      } else {
+        return res.status(404).json({ message: "Parent comment not found" });
       }
-    });
-
-    res.status(200).json(comments[commentIndex]); // Vráť aktualizovaný komentár
-  } else {
-    res.status(404).json({ message: "Comment not found" }); // Ak komentár neexistuje
-  }
-});
-
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-
-  const commentIndex = comments.findIndex(
-    (comment) => comment.id !== parseInt(id)
-  );
-
-  if (commentIndex !== -1) {
-    comments.splice(commentIndex, 1);
-
-    fs.writeFile("./data.json", JSON.stringify({ comments }), (err) => {
-      if (err) {
-        console.error("Error writing to data.json:", err);
-      }
-    });
-    res.status(204).send();
-  } else {
-    res.status(404).json({ message: "Comment not found" });
+    } else {
+      
+      data.comments.push(newComment);
+    }
+    data.comments.push(newComment)
+    writeData(data)
+    res.status(201).json(newComment)
+  
+  } catch (error) {
+    res.status(500).json({ message: "Error adding comment", error })
   }
 });
 

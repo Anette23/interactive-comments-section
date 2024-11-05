@@ -116,3 +116,46 @@ body {
 .card footer .replyBtn:hover {
   text-decoration: underline;
 }
+
+footer {
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 8px;
+}
+
+textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--lightGrayishBlue);
+  padding: 1rem;
+  font-family: inherit;
+}
+
+.addComment {
+  background-color: var(--moderateBlue);
+  color: white;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+}
+
+footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.currentUserImg {
+  width:40px
+}
+
+
+/* @media  (min-width:800px){
+  footer {
+    flex-direction: column;
+    justify-content: baseline;
+  }
+} */

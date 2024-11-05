@@ -1,14 +1,19 @@
 const express = require('express')
 const cors = require('cors')
-const commentsRouter = require('./index')
+const routes = require('./index')
 
 const app = express()
+const PORT = 5000
+
 app.use(cors())
 app.use(express.json())
 
-app.use('/comments', commentsRouter)
+app.use('/api', routes)
 
-const PORT = 5000
-app.listen(PORT,() => {
+app.get('/', (req,res) => {
+    res.send('Cau backend funguje')
+})
+
+app.listen(PORT, () => {
     console.log(`Server runs on port ${PORT}`)
 })
